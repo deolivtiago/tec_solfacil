@@ -33,6 +33,7 @@ defmodule TecSolfacil.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.6.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
