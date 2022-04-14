@@ -5,8 +5,19 @@ defmodule TecSolfacilWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug TecSolfacilWeb.Auth.Pipeline
+  end
+
   scope "/api/v1", TecSolfacilWeb do
     pipe_through :api
+
+    post "/signup", UserController, :create
+    post "/signin", UserController, :signin
+  end
+
+  scope "/api/v1", TecSolfacilWeb do
+    pipe_through [:api, :auth]
 
     get "/addresses/:zip", AddressController, :show
 
