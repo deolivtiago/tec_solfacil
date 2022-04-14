@@ -1,9 +1,10 @@
 defmodule TecSolfacilWeb.UserControllerTest do
   use TecSolfacilWeb.ConnCase
 
-  import TecSolfacil.AccountsFixtures
-
   alias TecSolfacil.Accounts.User
+  alias TecSolfacilWeb.Auth.Guardian
+
+  import TecSolfacil.AccountsFixtures
 
   @create_attrs %{
     email: "some_email@mail.com",
@@ -18,31 +19,35 @@ defmodule TecSolfacilWeb.UserControllerTest do
   @invalid_attrs %{email: nil, name: nil, password: nil}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, jwt, _claims} = Guardian.encode_and_sign(user_fixture())
+
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> put_req_header("authorization", "Bearer #{jwt}")
+
+    {:ok, conn: conn}
   end
 
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] != []
     end
   end
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"user" => %{"id" => id}} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.user_path(conn, :show, id))
 
       assert %{
                "id" => ^id,
                "email" => "some_email@mail.com",
-               "name" => "some name",
-               "password_hash" => password_hash
+               "name" => "some name"
              } = json_response(conn, 200)["data"]
-
-      assert true == Argon2.verify_pass("some_password", password_hash)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -63,11 +68,8 @@ defmodule TecSolfacilWeb.UserControllerTest do
       assert %{
                "id" => ^id,
                "email" => "some_updated_email@mail.com",
-               "name" => "some updated name",
-               "password_hash" => password_hash
+               "name" => "some updated name"
              } = json_response(conn, 200)["data"]
-
-      assert true == Argon2.verify_pass("some_updated_password", password_hash)
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do

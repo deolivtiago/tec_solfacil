@@ -45,7 +45,7 @@ defmodule TecSolfacilWeb.Auth.Guardian do
   end
 
   defp create_token(%User{} = user) do
-    with {:ok, token, _claims} = encode_and_sign(user) do
+    with {:ok, token, _claims} <- encode_and_sign(user) do
       {:ok, token}
     end
   end

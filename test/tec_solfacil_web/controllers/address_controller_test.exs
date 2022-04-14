@@ -1,13 +1,23 @@
 defmodule TecSolfacilWeb.AddressControllerTest do
   use TecSolfacilWeb.ConnCase
 
+  alias TecSolfacilWeb.Auth.Guardian
+
   import TecSolfacil.LocationFixtures
   import TecSolfacilWeb.ViaCEPFixtures
+  import TecSolfacil.AccountsFixtures
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
-
     mock_client()
+
+    {:ok, jwt, _claims} = Guardian.encode_and_sign(user_fixture())
+
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> put_req_header("authorization", "Bearer #{jwt}")
+
+    {:ok, conn: conn}
   end
 
   describe "create address" do
