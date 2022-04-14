@@ -10,6 +10,12 @@ import Config
 config :tec_solfacil,
   ecto_repos: [TecSolfacil.Repo]
 
+# Oban configuration
+config :tec_solfacil, Oban,
+  repo: TecSolfacil.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 5]
+
 # Configures the endpoint
 config :tec_solfacil, TecSolfacilWeb.Endpoint,
   url: [host: "localhost"],
