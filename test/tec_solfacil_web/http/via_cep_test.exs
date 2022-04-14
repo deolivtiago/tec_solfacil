@@ -1,15 +1,17 @@
 defmodule TecSolfacilWeb.Http.ViaCEPTest do
   use ExUnit.Case
 
+  alias Ecto.Adapters.SQL
+
   import TecSolfacilWeb.ViaCEPFixtures
 
-  alias TecSolfacil.Repo
   alias TecSolfacil.Location.Address
+  alias TecSolfacil.Repo
   alias TecSolfacilWeb.Http.ViaCEP
 
   setup do
     mock_client()
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+    :ok = SQL.Sandbox.checkout(Repo)
   end
 
   describe "viacep" do
