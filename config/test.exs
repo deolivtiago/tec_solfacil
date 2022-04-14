@@ -28,3 +28,6 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Mock Tesla Client
+config :tesla, TecSolfacilWeb.Http.ViaCEP.Client, adapter: Tesla.Mock
