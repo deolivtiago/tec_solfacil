@@ -17,6 +17,11 @@ config :tec_solfacil, TecSolfacilWeb.Endpoint,
   pubsub_server: TecSolfacil.PubSub,
   live_view: [signing_salt: "w5w12bDi"]
 
+# Configures JWT authentication with Guardian
+config :tec_solfacil, TecSolfacilWeb.Auth.Guardian,
+  issuer: "tec_solfacil",
+  secret_key: "ERnmLRtpJa4uuo0y9TAxHrGtc8uCA+1ljEYW3OGn0lruMiIaqg5VvIXSyd+rumR7"
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
