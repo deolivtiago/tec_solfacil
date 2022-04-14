@@ -9,6 +9,8 @@ defmodule TecSolfacilWeb.Router do
     pipe_through :api
 
     get "/addresses/:zip", AddressController, :show
+
+    resources "/users", UserController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
