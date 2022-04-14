@@ -4,6 +4,8 @@ defmodule TecSolfacilWeb.AddressController do
   alias TecSolfacil.Location
   alias TecSolfacil.Location.Address
 
+  action_fallback TecSolfacilWeb.FallbackController
+
   def show(conn, %{"zip" => zip}) do
     case Location.get_address_by_zip(zip) do
       %Address{} = address ->
