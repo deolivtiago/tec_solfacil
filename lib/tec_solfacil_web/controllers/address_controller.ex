@@ -4,6 +4,7 @@ defmodule TecSolfacilWeb.AddressController do
   alias TecSolfacil.Location
   alias TecSolfacil.Location.Address
   alias TecSolfacilWeb.Http.ViaCEP
+  alias TecSolfacilWeb.Workers
 
   action_fallback TecSolfacilWeb.FallbackController
 
@@ -23,5 +24,13 @@ defmodule TecSolfacilWeb.AddressController do
       nil ->
         create(conn, params)
     end
+  end
+
+  def csv(conn, %{"email" => email}) do
+    %{email: email}
+    |> Workers.CSVJob.new(schedule_in: 120)
+    |> Oban.insert()
+
+    send_resp(conn, :no_content, "")
   end
 end

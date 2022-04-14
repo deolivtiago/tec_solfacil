@@ -20,6 +20,7 @@ defmodule TecSolfacilWeb.Router do
     pipe_through [:api, :auth]
 
     get "/addresses/:zip", AddressController, :show
+    post "/addresses/download-csv", AddressController, :csv
 
     resources "/users", UserController, except: [:new, :edit]
   end
