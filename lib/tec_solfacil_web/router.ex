@@ -5,8 +5,10 @@ defmodule TecSolfacilWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", TecSolfacilWeb do
+  scope "/api/v1", TecSolfacilWeb do
     pipe_through :api
+
+    get "/addresses/:zip", AddressController, :show
   end
 
   # Enables LiveDashboard only for development
