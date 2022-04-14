@@ -33,6 +33,7 @@ defmodule TecSolfacil.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:argon2_elixir, "~> 2.0"},
       {:tesla, "~> 1.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.6.6"},
